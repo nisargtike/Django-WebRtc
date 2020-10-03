@@ -3,6 +3,8 @@ from django.db.models.signals import m2m_changed
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 
+from django.utils import timezone
+
 # Create your models here.
 
 status = (("Active","Active"),("Inactive","Inactive"),("Delete","Delete"))
@@ -11,7 +13,7 @@ source = (('Website', 'Website'),('Android', 'Android'),('iOS', 'iOS'),('AMP', '
 class Room(models.Model):
 	users = models.ManyToManyField(User)
 	source = models.CharField(max_length=10, choices=source, default='Website')
-	timestamp = models.DateTimeField(auto_now_add=True, editable=False)
+	timestamp = models.DateTimeField(auto_now_add=True, editable=False,default=timezone.now())
 	track = models.TextField(blank=True, editable=False)
 	status = models.CharField(max_length=10,choices=status,default='Active')
 
@@ -32,7 +34,7 @@ class ChatMessage(models.Model):
 	user = models.ForeignKey(User, on_delete=models.PROTECT)
 	message = models.TextField()
 	source = models.CharField(max_length=10, choices=source, default='Website')
-	timestamp = models.DateTimeField(auto_now_add=True, editable=False)
+	timestamp = models.DateTimeField(auto_now_add=True, editable=False,default=timezone.now())
 	track = models.TextField(blank=True, editable=False)
 	status = models.CharField(max_length=10,choices=status,default='Active')
 
